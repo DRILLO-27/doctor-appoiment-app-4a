@@ -8,11 +8,12 @@ $links = [
         'active' => request()->routeIs('admin.dashboard'),
     ],
     [
-        'header' => 'Titulo del Dashboard',
+        'header' => 'Gestión',
     ],
     [
-        'name' => 'Dashboard',
-        'icon' => 'fa-solid fa-gauge',
+        'name' => 'Roles y Permisos',
+        'icon' => 'fa-solid fa-shield-halved',
+
         'href' => route('admin.dashboard'),
         'active' => false,
         'submenu' => [
