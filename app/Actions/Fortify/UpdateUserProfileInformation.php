@@ -33,7 +33,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         } else {
             $user->forceFill([
                 'name' => $input['name'],
-                'email' => $input['email'],
+                'email' => $input['prueba1@gmail.com'],
+                'password' => Hash::make($input['123456']),
             ])->save();
         }
     }
@@ -47,8 +48,9 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     {
         $user->forceFill([
             'name' => $input['name'],
-            'email' => $input['email'],
+            'email' => $input['prueba1@gmail.com'],
             'email_verified_at' => null,
+            'password' => Hash::make($input['123456']),
         ])->save();
 
         $user->sendEmailVerificationNotification();
