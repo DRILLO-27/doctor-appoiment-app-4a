@@ -3,16 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class Role extends Model
 {
-    protected $fillable = [
-        'name',
-        'guard_name'
-    ];
+        use HasFactory;
 
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
+    // ✅ Campos que se pueden llenar con create()
+    protected $fillable = ['name'];
 }

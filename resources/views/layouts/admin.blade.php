@@ -5,43 +5,65 @@
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title }}</title>
+        <title>{{ $title }}</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <!-- Fonts -->  
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://kit.fontawesome.com/0d20d99f15.js" crossorigin="anonymous"></script>
+        <!-- Styles -->
+        @livewireStyles
 
-    {{-- WireUI --}}
-    <wireui:scripts />
+        <!-- Scripts principales -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="https://kit.fontawesome.com/a7de8752fc.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- Styles -->
-    @livewireStyles
-</head>
-<body class="font-sans antialiased bg-gray-50">
+        {{-- ✅ WireUI Styles --}}
 
-    @include('layouts.includes.admin.navigation')
-    @include('layouts.includes.admin.sidebar')
+    </head>
 
-    <div class="p-4 sm:ml-64">
-        <div class="mt-14 flex items-center justify-between w-full">
-            @include('layouts.includes.admin.breadcrumb')
+    <body class="font-sans antialiased bg-gray-50">
+        {{-- 🔹 Navbar superior --}}
+        @include('layouts.includes.admin.navigation')
+
+        {{-- 🔹 Sidebar lateral --}}
+        @include('layouts.includes.admin.sidebar')
+
+        <div class="p-4 sm:ml-64">
+            <!-- Margin top 14px -->
+            <div class="mt-14 flex items-center justify-between w-full">
+                @include('layouts.includes.admin.breadcrumb', ['breadcrumbs' => $breadcrumbs ?? []])
+                @isset($action)
+                {{ $action }}
+                @endisset
+
+            </div>
+
+            {{-- Contenido dinámico de cada vista --}}
+            {{ $slot }}
         </div>
 
-        {{ $slot }}
-    </div>
+        @stack('modals')
 
-    @stack('modals')
-    @livewireScripts
+        {{-- 🔹 Scripts adicionales --}}
+        <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-</body>
+        {{-- Orden correcto: primero WireUI, luego Livewire --}}
+        @wireUiScripts
+        @livewireScripts
+
+        {{--Mostrar Sweet Alert--}}
+        @if (session('swal'))
+        <script>
+        Swal.fire(@json(session('swal')));
+    </script>
+    @endif
+
+    </body>
 </html>

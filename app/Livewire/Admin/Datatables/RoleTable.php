@@ -1,39 +1,71 @@
 <?php
-
+ 
 namespace App\Livewire\Admin\Datatables;
+ 
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
 
-use Livewire\Component;
+use Rappasoft\LaravelLivewireTables\Views\Column;
+
 use App\Models\Role;
 
-class RoleTable extends Component
+use Carbon\Carbon;
+ 
+class RoleTable extends DataTableComponent
+
 {
-    public $roles;
-    public $search = '';
 
-    public function mount()
+    protected $model = Role::class;
+ 
+    public function configure(): void
+
     {
-        $this->loadRoles();
+
+        $this->setPrimaryKey('id');
+
+    }
+ 
+    public function columns(): array
+
+    {
+
+        return [
+
+            Column::make('Id', 'id')
+
+                ->sortable(),
+ 
+            Column::make('Nombre', 'name')
+
+                ->sortable(),
+ 
+            Column::make('Fecha', 'created_at') // <- nombre correcto
+
+                ->sortable()
+
+                ->format(function ($value, $row) {
+
+                    if (!$row->created_at) return '-';
+ 
+                    // Si ya es Carbon, formatea; si es string, parsea y formatea
+
+                    $dt = $row->created_at instanceof \Carbon\Carbon
+
+                        ? $row->created_at
+
+                        : Carbon::parse($row->created_at);
+ 
+                    return $dt->format('d/m/Y');
+
+                }),
+            Column::make('Acciones')
+                ->label(function ($row) {
+                    return view('admin.roles.actions', 
+                    ['role' => $row]);
+
+                }),
+        ];
     }
 
-    public function loadRoles()
-    {
-        $query = Role::query();
-        
-        if ($this->search) {
-            $query->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('guard_name', 'like', '%' . $this->search . '%');
-        }
-        
-        $this->roles = $query->orderBy('id', 'desc')->get();
-    }
-
-    public function updatedSearch()
-    {
-        $this->loadRoles();
-    }
-
-    public function render()
-    {
-        return view('livewire.admin.datatables.role-table');
-    }
 }
+
+ 
