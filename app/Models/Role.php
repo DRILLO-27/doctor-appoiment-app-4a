@@ -10,6 +10,6 @@ class Role extends Model
 {
         use HasFactory;
 
-    // ✅ Campos que se pueden llenar con create()
+
     protected $fillable = ['name'];
 }
