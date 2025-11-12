@@ -4,7 +4,7 @@
         'href' => route('admin.dashboard'),
     ],
     [
-        'name' => 'sid',
+        'name' => 'Main',
         'href' => route('admin.dashboard'),
     ],
     [
