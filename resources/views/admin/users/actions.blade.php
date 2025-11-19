@@ -1,11 +1,11 @@
 <div class="flex items-center space-x-2">
     <!-- Botón Editar -->
-    <x-wire-button href="{{ route('admin.roles.edit', $role) }}" blue xs>
+    <x-wire-button href="{{ route('admin.users.edit', $user) }}" blue xs>
         <i class="fa-solid fa-pen-to-square"></i>
     </x-wire-button>
 
     <!-- Botón Eliminar -->
-    <form action="{{ route('admin.roles.destroy', $role) }}" method="POST" class="delete-form">
+    <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="delete-form">
         @csrf
         @method('DELETE')
 

@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            //nuevos campos
+            $table->string('id_number')->unique(); // Asegúrate de que este campo exista en tu modelo User
+            $table->string('phone')->nullable(); // Asegúrate de que este campo exista en tu modelo User
+            $table->string('address')->nullable(); // Asegúrate de que este campo exista en tu modelo User
             $table->text('two_factor_secret')->nullable();
             $table->text('two_factor_recovery_codes')->nullable();
             $table->rememberToken();

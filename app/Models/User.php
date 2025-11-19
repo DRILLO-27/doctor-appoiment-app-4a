@@ -8,17 +8,16 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
-// use Spatie\Permission\Traits\HasRoles; // 👈 puedes dejarla comentada si no usas Spatie todavía
+use Spatie\Permission\Traits\HasRoles; // 👈 AGREGA ESTO
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasProfilePhoto, Notifiable, TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, HasProfilePhoto, Notifiable, TwoFactorAuthenticatable, HasRoles; // 👈 AGREGA HasRoles
 
     protected $fillable = [
         'name',
         'email',
         'password',
-        // 'role_id' // 👈 agrega este campo si lo tienes en tu tabla users
     ];
 
     protected $hidden = [
@@ -38,11 +37,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    // 👇 Aquí va la relación con el modelo Role
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
     }
 }
