@@ -27,18 +27,29 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8|confirmed',
-            'role_id' => 'nullable|exists:roles,id', // opcional
+            'role_id' => 'nullable|exists:roles,id',
+            'id_number' => 'nullable|string|max:50|regex:/^[A-Za-z0-9\-]+$/|unique:users,id_number',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
+            'role_id' => 'nullable|exists:roles,id',
+
+           
         ]);
+
+
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'role_id' => $request->role_id,
+            'id_number' => $request->id_number,
+            'phone' => $request->phone,
+            'address' => $request->address, 
+            'role_id' => $request->role_id,  
         ]);
 
-        return redirect()->route('users.index')
-                         ->with('success', 'Usuario creado correctamente.');
+        return redirect()->route('admin.users.index') ->with('success', 'Usuario creado correctamente.');
     }
 
     public function edit(string $id)
