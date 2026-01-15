@@ -1,7 +1,7 @@
-<x-admin-layout title="Roles | Meditime"
+<x-admin-layout title="Nuevo Usuario | Meditime"
 :breadcrumbs="[
     ['name' => 'Dashboard', 'href' => route('admin.dashboard')],
-    ['name' => 'Roles', 'href' => route('admin.roles.index')],
+    ['name' => 'Usuarios', 'href' => route('admin.users.index')],
     ['name' => 'Nuevo'],
 ]">
 
@@ -30,7 +30,7 @@
                 inputmode="email"
             />
 
-            {{-- Passwords (2 columnas) --}}
+            {{-- Passwords --}}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <x-wire-input
                     label="Contraseña"
@@ -49,7 +49,7 @@
                 />
             </div>
 
-            {{-- ID + Phone (2 columnas) --}}
+            {{-- ID + Phone --}}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <x-wire-input
                     label="Número de Identificación"
@@ -80,15 +80,18 @@
                 value="{{ old('address') }}"
             />
 
-            {{-- Rol --}}
+            {{-- Rol (Spatie) --}}
             <x-wire-native-select
-                label="Roles"
+                label="Rol"
                 name="roles[]"
                 required>
                 <option value="">Seleccione un rol</option>
 
                 @foreach ($roles as $role)
-                    <option value="{{ $role->id }}" @selected(old('roles') == $role->id)>
+                    <option
+                        value="{{ $role->id }}"
+                        @selected(old('roles.0') == $role->id)
+                    >
                         {{ $role->name }}
                     </option>
                 @endforeach
