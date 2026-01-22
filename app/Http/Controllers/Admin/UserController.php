@@ -112,6 +112,11 @@ class UserController extends Controller
 
     public function destroy(string $id)
     {
+
+        if (auth()->id() == $id) {
+            abort(403, 'No puedes eliminar tu propio usuario.');
+        }
+
         $user = User::findOrFail($id);
 
         $user->syncRoles([]);
