@@ -25,6 +25,11 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        // 🔒 Only admins can create users
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -48,7 +53,6 @@ class UserController extends Controller
         $role = Role::findById($request->roles[0]);
         $user->syncRoles($role->name);
 
-        // ✅ SWEETALERT CREATE
         session()->flash('swal', [
             'icon' => 'success',
             'title' => 'Usuario creado',
@@ -60,6 +64,11 @@ class UserController extends Controller
 
     public function edit(string $id)
     {
+        // 🔒 Only admins can edit users
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized');
+        }
+
         $user = User::with('roles')->findOrFail($id);
         $roles = Role::all();
 
@@ -68,6 +77,11 @@ class UserController extends Controller
 
     public function update(Request $request, string $id)
     {
+        // 🔒 ISSUE: Non-admin cannot update users
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized');
+        }
+
         $user = User::findOrFail($id);
 
         $request->validate([
@@ -100,7 +114,6 @@ class UserController extends Controller
         $role = Role::findById($request->roles[0]);
         $user->syncRoles($role->name);
 
-        // ✅ SWEETALERT UPDATE
         session()->flash('swal', [
             'icon' => 'success',
             'title' => 'Usuario actualizado',
@@ -112,7 +125,12 @@ class UserController extends Controller
 
     public function destroy(string $id)
     {
+        
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized');
+        }
 
+       
         if (auth()->id() == $id) {
             abort(403, 'No puedes eliminar tu propio usuario.');
         }
